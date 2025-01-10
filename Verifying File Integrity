@@ -1,0 +1,97 @@
+HOW TO TEST FILE INTEGRITY USING KALI LINUX
+
+Step 1: Check md5sum options using md5sum --help
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum --help        
+
+Usage: md5sum [OPTION]... [FILE]...
+Print or check MD5 (128-bit) checksums.
+
+With no FILE, or when FILE is -, read standard input.
+  -b, --binary          read in binary mode
+  -c, --check           read checksums from the FILEs and check them
+      --tag             create a BSD-style checksum
+  -t, --text            read in text mode (default)
+  -z, --zero            end each output line with NUL, not newline,
+                          and disable file name escaping
+
+The following five options are useful only when verifying checksums:
+      --ignore-missing  don't fail or report status for missing files
+      --quiet           don't print OK for each successfully verified file
+      --status          don't output anything, status code shows success
+      --strict          exit non-zero for improperly formatted checksum lines
+  -w, --warn            warn about improperly formatted checksum lines
+
+      --help        display this help and exit
+      --version     output version information and exit
+
+
+Step 2: I created two text files named test1.txt and test2.txt on my Desktop direstory.
+
+┌──(kali㉿kali)-[~/Desktop]
+└─$ echo Information security objectives: CIA > test1.txt  
+                                                                                               
+┌──(kali㉿kali)-[~/Desktop]
+└─$ echo Bad actors objectives: DAD > test2.txt  
+
+Step 3: I used md5sum to generate md5 hash value for each file. This hash can be used to verify the file’s integrity on any system.
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum test1.txt
+
+091452f0f07b1d90cbccbfac6aa01777  test1.txt
+                                                                                               
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum test2.txt
+
+a87f414ec798472c5501c8990a91327b  test2.txt
+
+OR
+
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum test1.txt test2.txt
+
+091452f0f07b1d90cbccbfac6aa01777  test1.txt
+a87f414ec798472c5501c8990a91327b  test2.txt
+
+We can move the hashes to text file too with this command, md5sum test1.txt test2.txt > hashvalues.txt
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum test1.txt test2.txt > hashvalues.txt
+
+Using cat command to check the content of the file created, hashvalues.txt
+┌──(kali㉿kali)-[~/Desktop]
+└─$ cat hashvalues.txt
+
+091452f0f07b1d90cbccbfac6aa01777  test1.txt
+a87f414ec798472c5501c8990a91327b  test2.txt
+
+Step 4: VERIFIYING MD5 HASHES OF FILES GENERATED
+I used the -c option with the md5sum command to check the MD5 hash of the file test1.txt and test2.txt against the previously generated hashes. 
+The output ‘OK’ indicates that the files' integrity are intact.
+
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum -c <<< '091452f0f07b1d90cbccbfac6aa01777  test1.txt'
+test1.txt: OK
+                                                                                               
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum -c <<< 'a87f414ec798472c5501c8990a91327b  test2.txt'
+test2.txt: OK
+
+ADVANCED USAGE: HANDLING MULTIPLE FILES AND CHECKING HASHES
+
+┌──(kali㉿kali)-[~/Desktop]
+└─$ md5sum -c hashvalues.txt                                   
+test1.txt: OK
+test2.txt: OK
+
+.....................................................................
+
+Alternative algorithms Commands: sha256sum and sha1sum.
+These commands use different hash algorithms that can provide stronger cryptographic security.
+
+Also, HashCalc is great for checking file integrity. You can download this windows version through this link, https://hashcalc.en.download.it/download. 
+After installation, upload the file and calculate the hash. Immediately it will generate it for you.
+
+Thank you.
+
+Happy Hacking! Happy Defending!
+
